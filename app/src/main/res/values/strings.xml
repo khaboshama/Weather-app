@@ -3,4 +3,12 @@
     <string name="message_error_no_internet">Please check your internet connection</string>
     <string name="something_went_wrong">Something went wrong, please try again</string>
     <string name="city_name">city name</string>
+    <string name="pressure">pressure</string>
+    <string name="hpa">hpa</string>
+    <string name="visibility">visibility</string>
+    <string name="km">km</string>
+    <string name="wind_formatted">Wind: %s km/h</string>
+    <string name="min_formatted">Max:%s℃</string>
+    <string name="max_formatted">Max:%s℃</string>
+    <string name="humidity">humidity</string>
 </resources>

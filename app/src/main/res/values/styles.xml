@@ -8,10 +8,28 @@
         <item name="android:layout_marginStart">@dimen/_8sdp</item>
     </style>
 
-    <style name="EditTextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="editTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/_20sp</item>
-        <item name="android:layout_marginStart">@dimen/_8sdp</item>
+    </style>
+
+    <style name="dateTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_18sp</item>
+    </style>
+
+    <style name="timeTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_30sp</item>
+    </style>
+
+    <style name="temperatureTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_90sp</item>
+    </style>
+    <style name="temperatureUnitTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_40sp</item>
     </style>
 </resources>
