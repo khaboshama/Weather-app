@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Weather App</string>
+    <string name="message_error_no_internet">Please check your internet connection</string>
+    <string name="something_went_wrong">Something went wrong, please try again</string>
+    <string name="city_name">city name</string>
+</resources>
