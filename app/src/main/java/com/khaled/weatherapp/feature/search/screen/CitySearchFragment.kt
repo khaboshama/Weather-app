@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.khaled.weatherapp.R
 import com.khaled.weatherapp.common.BaseFragment
 import com.khaled.weatherapp.databinding.FragmentCitySearchBinding
+import com.khaled.weatherapp.utils.ImageUtils
 import kotlinx.android.synthetic.main.fragment_city_search_.*
 
 class CitySearchFragment : BaseFragment<CitySearchViewModel>() {
@@ -64,6 +65,8 @@ class CitySearchFragment : BaseFragment<CitySearchViewModel>() {
                     visibilityValueTextView.text = it.visibility
                     pressureValueTextView.text = it.main.pressure
                     humidityValueTextView.text = it.main.humidity
+                    weatherDescriptionTextView.text = it.weather.description
+                    ImageUtils.loadImage(requireActivity(), it.weather.icon, R.drawable.ic_weather, weatherImage)
                     View.VISIBLE
                 }
             }
