@@ -8,7 +8,8 @@
     <string name="visibility">visibility</string>
     <string name="km">km</string>
     <string name="wind_formatted">Wind: %s km/h</string>
-    <string name="min_formatted">Max:%s℃</string>
-    <string name="max_formatted">Max:%s℃</string>
+    <string name="min_temp_formatted">Min:%s℃</string>
+    <string name="max_temp_formatted">Max:%s℃</string>
     <string name="humidity">humidity</string>
+    <string name="city_not_found">City not found, please change your search input</string>
 </resources>

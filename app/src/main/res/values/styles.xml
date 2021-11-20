@@ -28,8 +28,19 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/_90sp</item>
     </style>
+
     <style name="temperatureUnitTextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/_40sp</item>
     </style>
+
+    <style name="CustomProgressDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="errorTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_20sp</item>
+    </style>
+
 </resources>
