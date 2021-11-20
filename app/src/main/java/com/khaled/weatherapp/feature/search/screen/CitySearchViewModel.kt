@@ -67,8 +67,8 @@ class CitySearchViewModel(
 
     fun onCitySearchByNameChanged(query: String) {
         val queryFormatted = query.trim()
+        if (currentQuery != queryFormatted) clearData()
         if (queryFormatted.isEmpty() || cityWeatherItemView.value?.name == queryFormatted) return
-        clearData()
         if (isWeatherCityByNameResponseFinished.not()) return
         isWeatherCityByNameResponseFinished = false
         currentQuery = queryFormatted
