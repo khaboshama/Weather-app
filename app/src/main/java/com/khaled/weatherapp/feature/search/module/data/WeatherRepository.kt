@@ -21,6 +21,25 @@ class WeatherRepository : IWeatherRepository {
         }
     }
 
+    override suspend fun getCityWeatherByLocation(lat: Double, lng: Double): AppResult<WeatherItem> {
+        val errorAppResult: AppResult.Error?
+
+        return when (val result =
+            HttpUtils.safeApiCall {
+                RetrofitClient.weatherApi.getCityWeatherByLocation(
+                    lat = lat,
+                    lng = lng,
+                    apiKey = API_KEY
+                )
+            }) {
+            is AppResult.Success -> AppResult.Success(result.data)
+            else -> {
+                errorAppResult = result as AppResult.Error
+                getErrorAppResult(errorAppResult.errorMessage, errorAppResult.errorMessageRes)
+            }
+        }
+    }
+
     private fun getErrorAppResult(errorMessage: String?, errorMessageRes: Int?) = AppResult.Error(
         errorMessage = errorMessage,
         errorMessageRes = errorMessageRes

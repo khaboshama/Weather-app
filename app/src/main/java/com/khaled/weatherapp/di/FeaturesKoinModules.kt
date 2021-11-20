@@ -5,6 +5,7 @@ import com.khaled.weatherapp.common.ApplicationContext
 import com.khaled.weatherapp.common.IApplicationContext
 import com.khaled.weatherapp.feature.search.module.data.IWeatherRepository
 import com.khaled.weatherapp.feature.search.module.data.WeatherRepository
+import com.khaled.weatherapp.feature.search.module.usecase.GetCityWeatherByLocationUseCase
 import com.khaled.weatherapp.feature.search.module.usecase.SearchCityByNameUseCase
 import com.khaled.weatherapp.feature.search.screen.CitySearchViewModel
 import org.koin.android.ext.koin.androidContext
@@ -26,7 +27,8 @@ object FeaturesKoinModules {
     private fun getCitySearchModule() = module {
         factory<IWeatherRepository> { WeatherRepository() }
         factory { SearchCityByNameUseCase(get()) }
-        viewModel { CitySearchViewModel(get()) }
+        factory { GetCityWeatherByLocationUseCase(get()) }
+        viewModel { CitySearchViewModel(get(),get()) }
     }
 
     private fun getMainModule() = module { viewModel { MainViewModel() } }

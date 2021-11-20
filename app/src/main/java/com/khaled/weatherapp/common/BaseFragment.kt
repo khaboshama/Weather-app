@@ -1,5 +1,6 @@
 package com.khaled.weatherapp.common
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -45,4 +46,10 @@ abstract class BaseFragment<ViewModel : BaseViewModel> : Fragment(), BaseView<Vi
     protected fun isDestinationFound(currentFragmentId: Int) =
         findNavController().currentDestination?.id == currentFragmentId
 
+    fun requestLocationPermission(requestCode: Int) {
+        requestPermissions(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            requestCode
+        )
+    }
 }

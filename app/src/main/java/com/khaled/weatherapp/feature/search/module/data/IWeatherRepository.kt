@@ -6,4 +6,5 @@ import com.khaled.weatherapp.feature.search.module.domain.WeatherItem
 
 interface IWeatherRepository : IBaseRepository {
     suspend fun searchByCityName(query: String): AppResult<WeatherItem>
+    suspend fun getCityWeatherByLocation(lat: Double, lng: Double): AppResult<WeatherItem>
 }

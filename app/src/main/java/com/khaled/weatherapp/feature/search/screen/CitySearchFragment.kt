@@ -1,13 +1,20 @@
 package com.khaled.weatherapp.feature.search.screen
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.location.*
 import com.khaled.weatherapp.R
+import com.khaled.weatherapp.common.BaseActivity
 import com.khaled.weatherapp.common.BaseFragment
+import com.khaled.weatherapp.common.network.ConnectivityUtils.isGpsEnabled
+import com.khaled.weatherapp.common.network.ConnectivityUtils.isNetworkEnabled
 import com.khaled.weatherapp.databinding.FragmentCitySearchBinding
 import com.khaled.weatherapp.utils.ImageUtils
 import kotlinx.android.synthetic.main.fragment_city_search_.*
@@ -15,6 +22,9 @@ import kotlinx.android.synthetic.main.fragment_city_search_.*
 class CitySearchFragment : BaseFragment<CitySearchViewModel>() {
 
     private var binding: FragmentCitySearchBinding? = null
+    private var locationRequest: LocationRequest? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
 
     override val loadingView: View?
         get() = loadingProgressBar
@@ -26,6 +36,12 @@ class CitySearchFragment : BaseFragment<CitySearchViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setListeners()
+        setupObserver()
+        setupLocationService()
+    }
+
+    private fun setListeners() {
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -38,7 +54,6 @@ class CitySearchFragment : BaseFragment<CitySearchViewModel>() {
             }
 
         })
-        setupObserver()
     }
 
     private fun setupObserver() {
@@ -67,9 +82,72 @@ class CitySearchFragment : BaseFragment<CitySearchViewModel>() {
                     humidityValueTextView.text = it.main.humidity
                     weatherDescriptionTextView.text = it.weather.description
                     ImageUtils.loadImage(requireActivity(), it.weather.icon, R.drawable.ic_weather, weatherImage)
+                    searchEditText.setText(it.name)
+                    searchEditText.setSelection(searchEditText.length())
                     View.VISIBLE
                 }
             }
         }
+    }
+
+    private fun setupLocationService() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        createLocationRequest()
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    viewModel.onLocationChanged(location)
+                }
+            }
+        }
+        handleStartLocationService()
+    }
+
+    private fun handleStartLocationService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ((getCurrentActivity() as BaseActivity<*>).checkLocationPermissionIsNotGranted(requireContext())) {
+                requestLocationPermission(LOCATION_REQUEST_CODE)
+                return
+            }
+        }
+        requestLocationUpdates()
+    }
+
+    private fun createLocationRequest() {
+        LocationRequest.create().apply {
+            interval = LOCATION_INTERVAL_REFRESH_TIME
+            fastestInterval = LOCATION_INTERVAL_REFRESH_TIME
+            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        }.also { locationRequest = it }
+        locationRequest?.smallestDisplacement = LOCATION_REFRESH_DISTANCE
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if ((getCurrentActivity() as BaseActivity<*>).checkAllPermissionGranted(grantResults)) {
+                requestLocationUpdates()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestLocationUpdates() {
+        if (isNetworkEnabled() && isGpsEnabled().not()) return
+        locationRequest?.let {
+            fusedLocationClient.requestLocationUpdates(
+                it,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        }
+    }
+
+    companion object {
+        private const val LOCATION_INTERVAL_REFRESH_TIME = 1 * 60 * 1000L
+        private const val LOCATION_REFRESH_DISTANCE = 500f
+        private const val LOCATION_REQUEST_CODE = 1000
     }
 }

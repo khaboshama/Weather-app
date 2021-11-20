@@ -1,6 +1,7 @@
 package com.khaled.weatherapp.common.network
 
 import android.content.Context
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.*
 import android.os.Build
@@ -21,4 +22,15 @@ object ConnectivityUtils {
             activeNetwork != null && activeNetwork.isConnected
         }
     }
+
+    fun isGpsEnabled(): Boolean {
+        val lm = applicationContext.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    fun isNetworkEnabled(): Boolean {
+        val lm = applicationContext.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
 }
