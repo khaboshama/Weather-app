@@ -30,13 +30,8 @@ object HttpUtils {
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): AppResult<T> {
         return withContext(Dispatchers.IO) {
             return@withContext try {
-                // check internet connection
                 if (ConnectivityUtils.isNetworkConnected().not()) return@withContext noInternetError
-
-                // make api call
                 val response = call()
-
-                // check response and convert to result
                 return@withContext handleResult(response)
 
             } catch (error: Throwable) {
@@ -53,12 +48,10 @@ object HttpUtils {
         }
 
     private fun <T : Any> handleResult(response: Response<T>): AppResult<T> {
-        return if (response.body() != null) {
-            AppResult.Success(response.body()!!)
-        } else if (response.code() == 404){
-            cityNotFoundError
-        } else {
-            unexpectedError
+        return when {
+            response.body() != null -> AppResult.Success(response.body()!!)
+            response.code() == 404 -> cityNotFoundError
+            else -> unexpectedError
         }
     }
 
