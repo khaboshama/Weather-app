@@ -19,6 +19,10 @@ object HttpUtils {
         errorMessageRes = R.string.something_went_wrong
     )
 
+    private val cityNotFoundError = AppResult.Error(
+        errorMessageRes = R.string.city_not_found
+    )
+
     private fun getHttpError(error: String) = AppResult.Error(
         errorMessage = error
     )
@@ -51,6 +55,8 @@ object HttpUtils {
     private fun <T : Any> handleResult(response: Response<T>): AppResult<T> {
         return if (response.body() != null) {
             AppResult.Success(response.body()!!)
+        } else if (response.code() == 404){
+            cityNotFoundError
         } else {
             unexpectedError
         }
