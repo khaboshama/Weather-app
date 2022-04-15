@@ -27,7 +27,7 @@ This project implements clean architecture, MVVM structure pattern, Retrofit for
 3. **di**: It contains setup of koin dependency injection.
 4. **feature**: It contains the packages of each feature in the application. Each feature contains two packages, one for module and one for screens.
 5. **utils**: It contains the utils classes of the application.
-6. **utils**: It contains any constants values in the application.
+6. **constants**: It contains any constants values in the application.
 
 
 ## Library reference resources
