@@ -63,4 +63,35 @@ class GetCityWeatherByLocationUseCaseTest {
             assertEquals((result as AppResult.Success).data.name, "any name")
         }
     }
+
+    @Test
+    fun getCityWeatherByLocation_failed() {
+        testCoroutineRule.runBlockingTest {
+
+            val coordinate = Coordinate(1.0, 2.0)
+            assertEquals(coordinate, coordinate)
+            val wind = Wind(2.2)
+            assertEquals(wind, wind)
+            val weatherSystem = WeatherSystem("egypt")
+            assertEquals(weatherSystem, weatherSystem)
+            val main = Main(
+                temp = 1.2,
+                pressure = 1,
+                humidity = 2,
+                minTemp = 2.2,
+                maxTemp = 4.6
+            )
+            val item = WeatherItem(
+                coordinate = coordinate, emptyList(), main = main, visibility = 20, wind = wind,
+                weatherSystem = weatherSystem, name = "any name"
+            )
+            assertEquals(item, item)
+            val errorMessage = "please try again"
+            Mockito.`when`(
+                repository.getCityWeatherByLocation(anyDouble(), anyDouble())
+            ).thenReturn(AppResult.Error(errorMessage = errorMessage))
+            val result = getCityWeatherByLocationUseCase.invoke(anyDouble(), anyDouble())
+            assertEquals((result as AppResult.Error).errorMessage, errorMessage)
+        }
+    }
 }
