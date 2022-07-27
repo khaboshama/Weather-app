@@ -14,9 +14,9 @@ abstract class BaseViewModel : ViewModel() {
     val showLoading = SingleLiveEvent<Boolean>()
 
     fun wrapBlockingOperation(loadingEnabled: Boolean = true, function: suspend () -> Any): Job {
+        showLoading.value = loadingEnabled
         return viewModelScope.launch {
             try {
-                showLoading.value = loadingEnabled
                 function()
             } catch (throwable: Throwable) {
                 HttpUtils.parseErrorResponse(throwable)

@@ -26,6 +26,13 @@ class TestCoroutineRule : TestRule {
         }
     }
 
+    fun pauseDispatcher() {
+        testCoroutineDispatcher.pauseDispatcher()
+    }
+    fun resumeDispatcher() {
+        testCoroutineDispatcher.resumeDispatcher()
+    }
+
     fun runBlockingTest(block: suspend TestCoroutineScope.() -> Unit) =
         testCoroutineScope.runBlockingTest { block() }
 

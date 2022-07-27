@@ -29,6 +29,10 @@ class CitySearchFragment : BaseFragment<CitySearchViewModel>() {
     override val loadingView: View?
         get() = loadingProgressBar
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.start()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

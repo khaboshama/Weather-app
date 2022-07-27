@@ -83,9 +83,6 @@ class CitySearchViewModel(
 
     init {
         dateView.value = getDateView()
-        viewModelScope.launch {
-            getTimeView()
-        }
     }
 
     private fun getDateView(): String {
@@ -104,5 +101,9 @@ class CitySearchViewModel(
         currentLocation = location
         getWeatherByLocation(location)
 
+    }
+
+    fun start() {
+        viewModelScope.launch { getTimeView() }
     }
 }
